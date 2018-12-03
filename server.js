@@ -19,9 +19,19 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+
+app.get("/api/timestamp/:date_string?", (req, res) => {
+  var date;
+  if (req.params.date_string == null) {
+    date = new Date();
+  } else if (req.params.date_string.includes('-')) {
+    date = new Date(Date.parse(req.params.date_string));
+  } else {
+    date = new Date(parseInt(req.params.date_string));
+  }
+  var unixDate = date.getTime();
+  var utcDate = date.toUTCString();
+  res.json({unix: unixDate, utc: utcDate});
 });
 
 
